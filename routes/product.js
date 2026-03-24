@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import Product from '../models/Product.js'
 
 const productRouter = Router()
@@ -23,11 +23,24 @@ productRouter.get('/products', async (req, res) => {
 
     if (sort === 'asc') query = query.sort({ price: 1 })
     if (sort === 'desc') query = query.sort({ price: -1 })
-    
+
     const products = await query
     res.json(products)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
+})
+
+productRouter.put('/products/:id', async (req, res) => {
+  try {
+    const update = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+
+    res.json(update)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+})
 
 export default productRouter
