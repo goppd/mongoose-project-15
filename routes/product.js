@@ -43,4 +43,13 @@ productRouter.put('/products/:id', async (req, res) => {
   }
 })
 
+productRouter.delete('/products/:id', async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id)
+    res.json({ message: 'Product deleted' })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+})
+
 export default productRouter
