@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import productRouter from './routes/product.js'
 
 dotenv.config()
 
@@ -9,6 +10,9 @@ const app = express()
 const dbURI = process.env.MONGO_URI || 'URI'
 const port = process.env.PORT || 3333
 const host = process.env.HOST || 'http://localhost'
+
+app.use(express.json())
+app.use('/products', productRouter)
 
 mongoose
   .connect(dbURI)
