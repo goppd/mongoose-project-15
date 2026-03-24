@@ -13,4 +13,21 @@ productRouter.post('/', async (req, res) => {
   }
 })
 
+productRouter.get('/products', async (req, res) => {
+  try {
+    const { category, sort } = req.query
+    let filter = {}
+    if (category) filter.category = category
+
+    let query = Product.find(filter)
+
+    if (sort === 'asc') query = query.sort({ price: 1 })
+    if (sort === 'desc') query = query.sort({ price: -1 })
+    
+    const products = await query
+    res.json(products)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+
 export default productRouter
